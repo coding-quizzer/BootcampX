@@ -12,9 +12,9 @@ const getStudentsInCohort = function(cohort, limit) {
   SELECT students.id, students.name AS student_name, cohorts.name AS cohort_name
   FROM students
   JOIN cohorts ON cohort_id = cohorts.id
-  WHERE cohorts.name LIKE ('${cohort}%')
-  LIMIT ${limit};
-  `)
+  WHERE cohorts.name LIKE (concat($1::text, '%'))
+  LIMIT $2;
+  `, [cohort, limit])
   .then(res => {
     res.rows.forEach(user => console.log(`${user.student_name} has an id of ${user.id} and was in the ${user.cohort_name} cohort`));
   })

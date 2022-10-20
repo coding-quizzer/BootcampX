@@ -16,9 +16,9 @@ const teacherAssistsForCohort = function(cohort) {
   JOIN teachers ON teacher_id = teachers.id
   JOIN students ON student_id = students.id
   JOIN cohorts ON cohort_id = cohorts.id
-  WHERE cohorts.name LIKE '${cohort}%'
+  WHERE cohorts.name LIKE concat($1::text, '%')
   ORDER BY teacher;
-  `)
+  `, [cohort])
   .then (res => {
   res.rows.forEach(assist => console.log(`${assist.cohort}: ${assist.teacher}`))})
   .catch(err => console.error('querry error', err.stack));
